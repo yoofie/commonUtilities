@@ -1,4 +1,4 @@
-# Common C/CPP Utilities, functions & snippets
+# Common C/C++ Utilities, functions & snippets
 
 This just a repo of common utilies, function and code snippets that are often used across projects.
 
