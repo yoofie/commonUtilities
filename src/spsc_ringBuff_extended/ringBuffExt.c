@@ -41,7 +41,7 @@ void ringb_reset(ringB_t *const input) {
 	ringb_clear_buffer(input);
 }
 
-void ringb_deregister_clear_function(ringB_t *const input, void (*clearData)(testStruct_t *)) {
+void ringb_deregister_clear_function(ringB_t *const input) {
 	input->clearData = NULL;
 }
 void ringb_register_clear_function(ringB_t *const input, void (*clearData)(testStruct_t *)) {
