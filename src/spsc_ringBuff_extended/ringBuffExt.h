@@ -6,6 +6,7 @@
 #define _RING_BUFF_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 /* **************************************
 	#defines
 *************************************** */
