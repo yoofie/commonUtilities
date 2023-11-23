@@ -12,10 +12,11 @@
 *************************************** */
 // Dummy struct used as test element. Search and replace this and substitue with your own structure
 // since C does not support generics
+#define NUM_OF_ELEM_IN_DATA_ARRAY 3U
 
 typedef struct {
 	uint8_t index;
-	uint8_t data[3];
+	uint8_t data[NUM_OF_ELEM_IN_DATA_ARRAY];
 } testStruct_t;
 
 /* **************************************
@@ -83,6 +84,12 @@ bool ringb_peek_first(ringB_t *const input, testStruct_t *const item);
 
 // Given a slot index, get the data at that position. Data is not gauranteed to be valid
 bool ringb_unsafe_random_access(ringB_t *const input, uint32_t slotIndex, testStruct_t *const item);
+
+// Scan items without removing items and perform action via UDF
+void ringb_scan_items(ringB_t *const input, void (*userFn)(uint8_t, void *const), void * userData);
+
+// Scan items without removing items and perform action via UDF, but with access to the current element
+void ringb_scan_item_element(ringB_t *const input, void (*userFn)(uint8_t, testStruct_t *, void *const), void *userData);
 
 /* Meta data & support functions
 ******************************************************** */

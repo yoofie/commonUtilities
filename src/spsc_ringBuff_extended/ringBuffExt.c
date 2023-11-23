@@ -172,6 +172,37 @@ bool ringb_unsafe_random_access(ringB_t *const input, uint32_t slotIndex, testSt
 	return retval;
 }
 
+void ringb_scan_items(ringB_t *const input, void (*userFn)(uint8_t, void *const), void *userData) {
+	uint8_t slotIndex = input->readIndex;
+	uint8_t sizeCounter = 0;
+	// sizeLimit must be atomic/protected by mutex, otherwise it will break
+	// mutex start here
+	uint8_t sizeLimit = input->size;
+	// mutex end goes here
+	if (userFn != NULL && !ringb_isEmpty(input)) {
+		while (sizeCounter != sizeLimit) {
+			(*userFn)(slotIndex, userData);
+			slotIndex = (slotIndex >= input->capacity - 1) ? 0 : (slotIndex + 1);
+			sizeCounter++;
+		}
+	}
+}
+
+void ringb_scan_item_element(ringB_t *const input, void (*userFn)(uint8_t, testStruct_t * data, void *const), void *userData) {
+	uint8_t slotIndex = input->readIndex;
+	uint8_t sizeCounter = 0;
+	// sizeLimit must be atomic/protected by mutex, otherwise it will break
+	// mutex start here
+	uint8_t sizeLimit = input->size;
+	// mutex end goes here
+	if (userFn != NULL && !ringb_isEmpty(input)) {
+		while (sizeCounter != sizeLimit) {
+			(*userFn)(slotIndex, &input->data[slotIndex], userData);
+			slotIndex = (slotIndex >= input->capacity - 1) ? 0 : (slotIndex + 1);
+			sizeCounter++;
+		}
+	}
+}
 /* ********************************************************
 	Peek()
 	Read the element without removing it from thr ring buffer
